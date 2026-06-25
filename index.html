@@ -117,6 +117,8 @@
   .song-btn-spotify:hover { background: #1DB954; color: var(--black); }
   .song-btn-youtube { color: #FF0000; border-color: #FF0000; }
   .song-btn-youtube:hover { background: #FF0000; color: var(--bone); }
+  .song-btn-audiomack { color: #FFA500; border-color: #FFA500; }
+  .song-btn-audiomack:hover { background: #FFA500; color: var(--black); }
   .song-btn-disabled { color: var(--muted); border-color: rgba(136,136,128,0.3); cursor: default; pointer-events: none; }
 
   /* FOOTER */
@@ -428,6 +430,7 @@ function renderCatalog(){
     card.className = 'song-card';
     const spotify = s.spotify || null;
     const youtube = s.youtube || null;
+    const audiomack = s.audiomack || null;
     card.innerHTML = `
       <div class="song-num">#${pad(s.num)}</div>
       <div class="song-title">${s.title}</div>
@@ -442,6 +445,9 @@ function renderCatalog(){
         ${youtube
           ? `<a class="song-btn song-btn-youtube" href="${youtube}" target="_blank">▶ YouTube</a>`
           : `<span class="song-btn song-btn-disabled">▶ YouTube</span>`}
+        ${audiomack
+          ? `<a class="song-btn song-btn-audiomack" href="${audiomack}" target="_blank">▶ Audiomack</a>`
+          : `<span class="song-btn song-btn-disabled">▶ Audiomack</span>`}
       </div>`;
     grid.appendChild(card);
   });
