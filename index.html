@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="HITMANA — Música que deja marca. Sitio oficial del artista. Catálogo completo, fan zone y más.">
+<meta property="og:title" content="HITMANA — Música que deja marca">
+<meta property="og:description" content="Sitio oficial de HITMANA. 77 canciones, ASCAP registrado, distribución global por TuneCore.">
+<title>HITMANA — Música que Deja Marca</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --gold: #C9A84C;
+    --gold-light: #E8C96A;
+    --gold-dim: #8A6E2F;
+    --black: #0A0A0A;
+    --black2: #111111;
+    --black3: #1A1A1A;
+    --bone: #F5F0E8;
+    --muted: #888880;
+    --border: rgba(201,168,76,0.2);
+  }
+  html { scroll-behavior: smooth; }
+  body { background: var(--black); color: var(--bone); font-family: Georgia, 'Times New Roman', serif; overflow-x: hidden; }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1rem 2rem;
+    background: rgba(10,10,10,0.93);
+    backdrop-filter: blur(8px);
+    border-bottom: 0.5px solid var(--border);
+  }
+  .nav-logo { font-size: 1.3rem; font-weight: bold; letter-spacing: 0.3em; color: var(--gold); text-decoration: none; }
+  .nav-links { display: flex; gap: 1.8rem; list-style: none; }
+  .nav-links a { font-family: system-ui,sans-serif; font-size: 0.78rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); text-decoration: none; transition: color 0.2s; }
+  .nav-links a:hover { color: var(--gold); }
+  .nav-menu-btn { display: none; background: none; border: none; color: var(--gold); font-size: 1.4rem; cursor: pointer; }
+
+  /* HERO */
+  #hero {
+    min-height: 100vh; display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    text-align: center; padding: 6rem 2rem 4rem;
+    background: radial-gradient(ellipse at 50% 60%, rgba(201,168,76,0.06) 0%, transparent 70%);
+  }
+  .hero-eyebrow { font-family: system-ui,sans-serif; font-size: 0.72rem; letter-spacing: 0.4em; text-transform: uppercase; color: var(--gold); margin-bottom: 2rem; }
+  .hero-title { font-size: clamp(4rem, 14vw, 10rem); font-weight: bold; letter-spacing: 0.15em; line-height: 1; color: var(--bone); }
+  .hero-title span { display: inline-block; opacity: 0; transform: translateY(30px); animation: letterUp 0.5s forwards; }
+  @keyframes letterUp { to { opacity: 1; transform: translateY(0); } }
+  .hero-sub { margin-top: 1.5rem; font-size: 1.05rem; font-style: italic; color: var(--muted); max-width: 480px; }
+  .hero-divider { width: 60px; height: 1px; background: var(--gold); margin: 2rem auto; }
+
+  /* COUNTDOWN */
+  .countdown-label { font-family: system-ui,sans-serif; font-size: 0.68rem; letter-spacing: 0.4em; text-transform: uppercase; color: var(--gold); margin-bottom: 1rem; }
+  .countdown-wrap { display: flex; gap: 2rem; justify-content: center; align-items: flex-start; }
+  .cd-unit { text-align: center; }
+  .cd-num { font-size: 2.8rem; font-weight: bold; color: var(--gold); display: block; line-height: 1; font-family: system-ui,sans-serif; min-width: 3rem; }
+  .cd-label { font-family: system-ui,sans-serif; font-size: 0.62rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--muted); margin-top: 0.4rem; display: block; }
+  .cd-sep { font-size: 2rem; color: var(--gold-dim); padding-top: 0.3rem; }
+  .hero-cta { margin-top: 2.5rem; display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; }
+
+  /* BUTTONS */
+  .btn-gold { background: var(--gold); color: var(--black); border: none; padding: 0.75rem 2rem; font-family: system-ui,sans-serif; font-size: 0.8rem; letter-spacing: 0.2em; text-transform: uppercase; cursor: pointer; transition: background 0.2s; font-weight: bold; }
+  .btn-gold:hover { background: var(--gold-light); }
+  .btn-outline { background: transparent; color: var(--gold); border: 1px solid var(--gold); padding: 0.75rem 2rem; font-family: system-ui,sans-serif; font-size: 0.8rem; letter-spacing: 0.2em; text-transform: uppercase; cursor: pointer; transition: all 0.2s; }
+  .btn-outline:hover { background: var(--gold); color: var(--black); }
+
+  /* SECTIONS */
+  .section-wrap { padding: 5rem 2rem; max-width: 900px; margin: 0 auto; }
+  .section-wrap.wide { max-width: 1100px; }
+  .section-eyebrow { font-family: system-ui,sans-serif; font-size: 0.68rem; letter-spacing: 0.4em; text-transform: uppercase; color: var(--gold); margin-bottom: 1rem; }
+  .section-title { font-size: clamp(1.8rem, 4vw, 2.8rem); color: var(--bone); margin-bottom: 1.5rem; line-height: 1.2; }
+  .section-body { font-size: 1rem; line-height: 1.85; color: var(--muted); max-width: 640px; }
+  .gold-line { width: 50px; height: 2px; background: var(--gold); margin: 2rem 0; }
+  .border-top { border-top: 0.5px solid var(--border); }
+
+  /* BIO */
+  .bio-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 2rem; }
+  .bio-stat { padding: 1.5rem 0; border-top: 0.5px solid var(--border); }
+  .bio-stat-num { font-size: 2.2rem; color: var(--gold); display: block; font-family: system-ui,sans-serif; }
+  .bio-stat-label { font-size: 0.78rem; color: var(--muted); font-family: system-ui,sans-serif; letter-spacing: 0.05em; }
+
+  /* FAN ZONE */
+  .fanzone-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem; margin-top: 2rem; }
+  .fz-card { background: var(--black2); border: 0.5px solid var(--border); padding: 1.5rem; transition: border-color 0.2s; }
+  .fz-card:hover { border-color: var(--gold); }
+  .fz-icon { font-size: 1.6rem; margin-bottom: 0.8rem; display: block; color: var(--gold); }
+  .fz-title { font-size: 1rem; color: var(--bone); margin-bottom: 0.5rem; }
+  .fz-desc { font-size: 0.82rem; color: var(--muted); line-height: 1.6; font-family: system-ui,sans-serif; }
+  .fz-link { display: inline-block; margin-top: 1rem; font-size: 0.72rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); font-family: system-ui,sans-serif; text-decoration: none; border-bottom: 1px solid var(--gold-dim); cursor: pointer; }
+  .email-row { margin-top: 1rem; display: flex; gap: 0.5rem; }
+  .email-input { flex: 1; background: var(--black3); border: 0.5px solid rgba(201,168,76,0.3); color: var(--bone); padding: 0.5rem 0.7rem; font-size: 0.8rem; font-family: system-ui,sans-serif; outline: none; }
+  .email-input:focus { border-color: var(--gold); }
+
+  /* CATALOGO */
+  .cat-controls { display: flex; gap: 1rem; margin-bottom: 1.5rem; flex-wrap: wrap; align-items: center; }
+  .cat-search { flex: 1; min-width: 200px; background: var(--black2); border: 0.5px solid var(--border); color: var(--bone); padding: 0.6rem 1rem; font-family: system-ui,sans-serif; font-size: 0.85rem; outline: none; }
+  .cat-search:focus { border-color: var(--gold); }
+  .cat-search::placeholder { color: var(--muted); }
+  .cat-filter { background: var(--black2); border: 0.5px solid var(--border); color: var(--muted); padding: 0.6rem 1rem; font-family: system-ui,sans-serif; font-size: 0.82rem; cursor: pointer; outline: none; }
+  .cat-filter:focus { border-color: var(--gold); }
+  .cat-count { font-family: system-ui,sans-serif; font-size: 0.78rem; color: var(--muted); margin-bottom: 1.5rem; }
+  .cat-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1rem; }
+  .song-card { background: var(--black2); border: 0.5px solid var(--border); padding: 1.2rem 1.4rem; transition: border-color 0.2s, background 0.2s; }
+  .song-card:hover { border-color: var(--gold); background: var(--black3); }
+  .song-num { font-size: 0.65rem; color: var(--gold-dim); letter-spacing: 0.2em; font-family: system-ui,sans-serif; margin-bottom: 0.3rem; }
+  .song-title { font-size: 1rem; color: var(--bone); margin-bottom: 0.5rem; line-height: 1.3; }
+  .song-meta { display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap; }
+  .song-genre { display: inline-block; font-size: 0.62rem; letter-spacing: 0.1em; text-transform: uppercase; font-family: system-ui,sans-serif; padding: 0.18rem 0.5rem; border: 0.5px solid var(--gold-dim); color: var(--gold-dim); }
+  .song-lang { font-size: 0.7rem; color: var(--muted); font-family: system-ui,sans-serif; }
+  .cat-empty { text-align: center; padding: 3rem; color: var(--muted); font-family: system-ui,sans-serif; font-size: 0.9rem; grid-column: 1/-1; }
+  .song-links { display: flex; gap: 0.5rem; margin-top: 0.8rem; flex-wrap: wrap; }
+  .song-btn { display: inline-flex; align-items: center; gap: 0.3rem; padding: 0.3rem 0.7rem; font-size: 0.65rem; font-family: system-ui,sans-serif; letter-spacing: 0.1em; text-transform: uppercase; text-decoration: none; border: 0.5px solid; transition: all 0.2s; cursor: pointer; }
+  .song-btn-spotify { color: #1DB954; border-color: #1DB954; }
+  .song-btn-spotify:hover { background: #1DB954; color: var(--black); }
+  .song-btn-youtube { color: #FF0000; border-color: #FF0000; }
+  .song-btn-youtube:hover { background: #FF0000; color: var(--bone); }
+  .song-btn-disabled { color: var(--muted); border-color: rgba(136,136,128,0.3); cursor: default; pointer-events: none; }
+
+  /* FOOTER */
+  footer { border-top: 0.5px solid var(--border); padding: 3rem 2rem; text-align: center; }
+  .footer-logo { font-size: 1.5rem; letter-spacing: 0.3em; color: var(--gold); margin-bottom: 1rem; }
+  .footer-links { display: flex; gap: 1.5rem; justify-content: center; margin: 1.5rem 0; list-style: none; flex-wrap: wrap; }
+  .footer-links a { font-family: system-ui,sans-serif; font-size: 0.75rem; color: var(--muted); text-decoration: none; letter-spacing: 0.1em; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--gold); }
+  .footer-copy { font-size: 0.72rem; color: var(--muted); font-family: system-ui,sans-serif; letter-spacing: 0.08em; }
+
+  /* MOBILE */
+  @media (max-width: 640px) {
+    .nav-links { display: none; }
+    .nav-menu-btn { display: block; }
+    .nav-links.open { display: flex; flex-direction: column; position: fixed; top: 56px; left: 0; right: 0; background: var(--black2); padding: 1.5rem 2rem; border-bottom: 0.5px solid var(--border); gap: 1.2rem; }
+    .bio-grid { grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .countdown-wrap { gap: 1rem; }
+    .cd-num { font-size: 2rem; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="#hero">HITMANA</a>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#bio" onclick="closeMenu()">Artista</a></li>
+    <li><a href="#fanzone" onclick="closeMenu()">Fan Zone</a></li>
+    <li><a href="#catalogo" onclick="closeMenu()">Catálogo</a></li>
+    <li><a href="#contacto" onclick="closeMenu()">Contacto</a></li>
+  </ul>
+  <button class="nav-menu-btn" onclick="toggleMenu()">☰</button>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <p class="hero-eyebrow">Sitio Oficial · hitmana.com</p>
+  <h1 class="hero-title" id="heroTitle"></h1>
+  <p class="hero-sub">Donde el hit se encuentra con el maná — energía sagrada en cada nota.</p>
+  <div class="hero-divider"></div>
+  <p class="countdown-label">Próximo lanzamiento — 21 de septiembre 2026</p>
+  <div class="countdown-wrap" id="countdown">
+    <div class="cd-unit"><span class="cd-num" id="cd-d">--</span><span class="cd-label">Días</span></div>
+    <span class="cd-sep">:</span>
+    <div class="cd-unit"><span class="cd-num" id="cd-h">--</span><span class="cd-label">Horas</span></div>
+    <span class="cd-sep">:</span>
+    <div class="cd-unit"><span class="cd-num" id="cd-m">--</span><span class="cd-label">Min</span></div>
+    <span class="cd-sep">:</span>
+    <div class="cd-unit"><span class="cd-num" id="cd-s">--</span><span class="cd-label">Seg</span></div>
+  </div>
+  <div class="hero-cta">
+    <button class="btn-gold" onclick="scrollTo('catalogo')">Ver catálogo</button>
+    <button class="btn-outline" onclick="scrollTo('fanzone')">Fan Zone</button>
+  </div>
+</section>
+
+<!-- BIO -->
+<div class="border-top">
+<div class="section-wrap" id="bio">
+  <p class="section-eyebrow">El artista</p>
+  <h2 class="section-title">Más que un nombre,<br>una filosofía</h2>
+  <div class="gold-line"></div>
+  <p class="section-body">HITMANA es la fusión de <em>hit</em> — impacto que perdura — y <em>maná</em> — energía sagrada interior. Un artista de raíces cubanas que fusiona géneros, lenguas y mundos, movido por la perseverancia del Capricornio: subir sin parar, sin excusas, sin mirar atrás. Registrado en ASCAP, distribuido globalmente por TuneCore.</p>
+  <div class="bio-grid">
+    <div class="bio-stat"><span class="bio-stat-num">77</span><span class="bio-stat-label">Canciones en catálogo</span></div>
+    <div class="bio-stat"><span class="bio-stat-num">ASCAP</span><span class="bio-stat-label">Registrado oficialmente</span></div>
+    <div class="bio-stat"><span class="bio-stat-num">10+</span><span class="bio-stat-label">Géneros explorados</span></div>
+    <div class="bio-stat"><span class="bio-stat-num">TuneCore</span><span class="bio-stat-label">Distribución global</span></div>
+  </div>
+</div>
+</div>
+
+<!-- FAN ZONE -->
+<div class="border-top">
+<div class="section-wrap" id="fanzone">
+  <p class="section-eyebrow">Fan Zone</p>
+  <h2 class="section-title">Únete al movimiento</h2>
+  <div class="gold-line"></div>
+  <div class="fanzone-grid">
+    <div class="fz-card">
+      <span class="fz-icon">♪</span>
+      <p class="fz-title">Escuchar ahora</p>
+      <p class="fz-desc">Toda la música de HITMANA disponible en plataformas globales vía TuneCore.</p>
+      <span class="fz-link">Spotify · Apple Music →</span>
+    </div>
+    <div class="fz-card">
+      <span class="fz-icon">✦</span>
+      <p class="fz-title">TikTok & YouTube</p>
+      <p class="fz-desc">Contenido exclusivo, detrás de cámaras y los mejores momentos del estudio.</p>
+      <span class="fz-link">Seguir en TikTok →</span>
+    </div>
+    <div class="fz-card">
+      <span class="fz-icon">◈</span>
+      <p class="fz-title">Lista de espera</p>
+      <p class="fz-desc">Sé el primero en escuchar el próximo lanzamiento. Acceso anticipado exclusivo.</p>
+      <div class="email-row">
+        <input class="email-input" type="email" id="emailInput" placeholder="tu@email.com">
+        <button class="btn-gold" style="padding:0.5rem 1rem;font-size:0.75rem;" onclick="signupEmail()">Entrar</button>
+      </div>
+    </div>
+    <div class="fz-card">
+      <span class="fz-icon">☆</span>
+      <p class="fz-title">El Manifiesto</p>
+      <p class="fz-desc">Las 9 Leyes de la Atracción Energética — la filosofía que mueve a HITMANA.</p>
+      <span class="fz-link">Leer el manifiesto →</span>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- CATÁLOGO -->
+<div class="border-top">
+<div class="section-wrap wide" id="catalogo">
+  <p class="section-eyebrow">Catálogo HITMANA</p>
+  <h2 class="section-title">Las canciones</h2>
+  <div class="gold-line"></div>
+  <div class="cat-controls">
+    <input class="cat-search" type="text" id="searchInput" placeholder="Buscar por título o género...">
+    <select class="cat-filter" id="genreFilter"><option value="">Todos los géneros</option></select>
+    <select class="cat-filter" id="langFilter">
+      <option value="">Español &amp; Inglés</option>
+      <option value="ES">Español</option>
+      <option value="EN">Inglés</option>
+    </select>
+  </div>
+  <p class="cat-count" id="catCount"></p>
+  <div class="cat-grid" id="catGrid"></div>
+</div>
+</div>
+
+<!-- CONTACTO -->
+<div class="border-top">
+<div class="section-wrap" id="contacto" style="text-align:center;">
+  <p class="section-eyebrow">Contacto</p>
+  <h2 class="section-title">Hablemos</h2>
+  <div class="gold-line" style="margin:2rem auto;"></div>
+  <p class="section-body" style="margin:0 auto 2rem;text-align:center;">Para colaboraciones, bookings, licencias o cualquier asunto relacionado con HITMANA.</p>
+  <p style="color:var(--gold);font-size:1rem;letter-spacing:0.1em;">info@hitmana.com</p>
+</div>
+</div>
+
+<footer>
+  <p class="footer-logo">HITMANA</p>
+  <ul class="footer-links">
+    <li><a href="https://www.ascap.com" target="_blank">ASCAP</a></li>
+    <li><a href="https://www.tunecore.com" target="_blank">TuneCore</a></li>
+    <li><a href="#" target="_blank">TikTok</a></li>
+    <li><a href="#" target="_blank">YouTube</a></li>
+    <li><a href="#" target="_blank">Spotify</a></li>
+  </ul>
+  <p class="footer-copy">© 2026 HITMANA Ventures LLC · Todos los derechos reservados · hitmana.com</p>
+</footer>
+
+<script>
+const SONGS = [
+  {num:1,title:"Patria o Muerte",genre:"Sin clasificar",lang:"ES"},
+  {num:2,title:"Los Golpistas / Traidores",genre:"Protesta",lang:"ES"},
+  {num:3,title:"Alumbrones",genre:"Protesta",lang:"ES"},
+  {num:4,title:"Lágrimas de la Tierra",genre:"Sin clasificar",lang:"ES"},
+  {num:5,title:"Sálvame del Dolor",genre:"Sin clasificar",lang:"ES"},
+  {num:6,title:"Sueño Americano",genre:"Sin clasificar",lang:"ES"},
+  {num:7,title:"Fiesta en la Casita",genre:"Sin clasificar",lang:"ES"},
+  {num:8,title:"Mi Corazón Está Firme",genre:"Salsa",lang:"ES"},
+  {num:9,title:"En Getsemaní",genre:"Balada",lang:"ES"},
+  {num:10,title:"Las Rosas Me Avisaron",genre:"Sin clasificar",lang:"ES"},
+  {num:11,title:"La Mejor Venganza",genre:"Sin clasificar",lang:"ES"},
+  {num:12,title:"Las Bendiciones Se Andan",genre:"Sin clasificar",lang:"ES"},
+  {num:13,title:"El Patrón Descansó",genre:"Sin clasificar",lang:"ES"},
+  {num:14,title:"76 Millas de Amor",genre:"Salsa",lang:"ES"},
+  {num:15,title:"Un Poquito de Tu Amor",genre:"Sin clasificar",lang:"ES"},
+  {num:16,title:"Los Cinco Maestros",genre:"Sin clasificar",lang:"ES"},
+  {num:17,title:"Gente de Bien",genre:"Sin clasificar",lang:"ES"},
+  {num:18,title:"Himno del Vago",genre:"Sin clasificar",lang:"ES"},
+  {num:19,title:"Era Más Fácil Antes",genre:"Sin clasificar",lang:"ES"},
+  {num:20,title:"Solo en los Pies",genre:"Sin clasificar",lang:"ES"},
+  {num:21,title:"Amor de Verdad",genre:"Sin clasificar",lang:"ES"},
+  {num:22,title:"El Caribe No Para",genre:"Sin clasificar",lang:"ES"},
+  {num:23,title:"El Humo Habla",genre:"Son Cubano",lang:"ES"},
+  {num:24,title:"Así Se Vive",genre:"Pop Latino",lang:"ES"},
+  {num:25,title:"La Hora del Mundo",genre:"Balada",lang:"ES"},
+  {num:26,title:"El Arte de Volver",genre:"Balada",lang:"ES"},
+  {num:27,title:"Sin Color, Sin Amor",genre:"Afrobeat",lang:"ES"},
+  {num:28,title:"Yo Soy el Günther",genre:"Salsa",lang:"ES"},
+  {num:29,title:"La Paradoja",genre:"Rock Acústico",lang:"ES"},
+  {num:30,title:"El Sol Está Nervioso",genre:"Afrobeat",lang:"ES"},
+  {num:31,title:"Agua de Coco",genre:"Afrobeat",lang:"ES"},
+  {num:32,title:"Mi Bola de Cristal",genre:"Reggaetón",lang:"ES"},
+  {num:33,title:"Tú Eres el Ruido",genre:"Merengue Electrónico",lang:"ES"},
+  {num:34,title:"¿Por Qué Me Preguntas?",genre:"Reggaetón",lang:"ES"},
+  {num:35,title:"Ya Está en Ti",genre:"Hip-Hop",lang:"ES"},
+  {num:36,title:"Silent Empire (Taylor)",genre:"Hip-Hop / Trap",lang:"EN"},
+  {num:37,title:"La Temperatura",genre:"Salsa / Son Cubano",lang:"ES"},
+  {num:38,title:"Envidiosa",genre:"Reggaetón",lang:"ES"},
+  {num:39,title:"Perfect Ruins",genre:"Balada Épica",lang:"EN"},
+  {num:40,title:"The Possible",genre:"Hip-Hop",lang:"EN"},
+  {num:41,title:"La Mochila",genre:"Balada Épica / Soul",lang:"ES"},
+  {num:42,title:"Lo Que Estás Perdiendo (V1)",genre:"Balada Épica",lang:"ES"},
+  {num:43,title:"Vicio Fino",genre:"Reggaetón Sensual",lang:"ES"},
+  {num:44,title:"Cierra la Puerta Que Voy Bajando",genre:"Reggaetón Urbano",lang:"ES"},
+  {num:45,title:"Canción del Guaguancó (Los Papines)",genre:"Son Cubano / Guaguancó",lang:"ES"},
+  {num:46,title:"The Deal",genre:"Hip-Hop / Trap",lang:"EN"},
+  {num:47,title:"Cara Bonita, Corazón de Piedra",genre:"Balada Épica",lang:"ES"},
+  {num:48,title:"Tres de Azúcar y Dos de Café",genre:"Reparto / Urbano Cubano",lang:"ES"},
+  {num:49,title:"El Arte de Ensartar la Aguja",genre:"Bachata Reflexiva",lang:"ES"},
+  {num:50,title:"Lo Que Estás Perdiendo",genre:"Balada Épica",lang:"ES"},
+  {num:51,title:"Qué Puede Hacer un Cubano",genre:"Guaguancó / Reparto",lang:"ES"},
+  {num:52,title:"Bumerán",genre:"Salsa Repartera",lang:"ES"},
+  {num:53,title:"Moneda Dura",genre:"Soul Reflexivo",lang:"ES"},
+  {num:54,title:"Gente Buena Cuidado",genre:"Reparto / Guaguancó",lang:"ES"},
+  {num:55,title:"Mayo Divino",genre:"Soul / Gospel Moderno",lang:"ES"},
+  {num:56,title:"Déjalo Ganar",genre:"Merengue Electrónico",lang:"ES"},
+  {num:57,title:"Dueño del Silencio",genre:"Hip-Hop / Trap Latino",lang:"ES"},
+  {num:58,title:"Las Paredes",genre:"Soul",lang:"ES"},
+  {num:59,title:"El Ojo",genre:"Balada Soul / Jazz Moderno",lang:"ES"},
+  {num:60,title:"Lujo Invisible",genre:"Hip-Hop Consciente",lang:"ES"},
+  {num:61,title:"Novo Atrevido",genre:"Balada Épica",lang:"ES"},
+  {num:62,title:"Me Gustó Lo Que Vi",genre:"Reggaetón / Dembow",lang:"ES"},
+  {num:63,title:"Galifornia",genre:"Afrobeat",lang:"ES"},
+  {num:64,title:"Nadie Se Ha Dado Cuenta",genre:"Salsa Romántica",lang:"ES"},
+  {num:65,title:"El Filo",genre:"Afro-Deephouse",lang:"ES"},
+  {num:66,title:"Mi Concierto",genre:"Bachata",lang:"ES"},
+  {num:67,title:"El Rocío y la Sed",genre:"Balada Épica",lang:"ES"},
+  {num:68,title:"Toca mis Manos",genre:"Afro-Deephouse",lang:"ES"},
+  {num:69,title:"Tu Linaje",genre:"Afro-Deephouse",lang:"ES"},
+  {num:70,title:"Tus Brazos",genre:"Afro-Deephouse",lang:"ES"},
+  {num:71,title:"Bailando con el Viento",genre:"Afro-Deephouse",lang:"ES"},
+  {num:72,title:"Bienvenido Candela",genre:"Reparto Cubano",lang:"ES"},
+  {num:73,title:"Miguelón",genre:"Reparto Cubano",lang:"ES"},
+  {num:73,title:"Destello",genre:"Afro-Deephouse",lang:"ES"},
+  {num:74,title:"Atrévete",genre:"Afro-Deephouse",lang:"ES"},
+  {num:75,title:"Pendiente Estuve de Ti",genre:"Bachata",lang:"ES"},
+  {num:76,title:"Decide o Divide",genre:"Salsa",lang:"ES"},
+  {num:77,title:"Razorbill",genre:"Afro-Deephouse",lang:"EN"}
+];
+
+function pad(n){ return String(n).padStart(2,'0'); }
+
+function scrollTo(id){ document.getElementById(id).scrollIntoView({behavior:'smooth'}); }
+
+function toggleMenu(){
+  document.getElementById('navLinks').classList.toggle('open');
+}
+function closeMenu(){
+  document.getElementById('navLinks').classList.remove('open');
+}
+
+function signupEmail(){
+  const v = document.getElementById('emailInput').value;
+  if(v && v.includes('@')){
+    alert('¡Anotado! Serás el primero en escucharlo.');
+    document.getElementById('emailInput').value = '';
+  } else {
+    alert('Por favor ingresa un email válido.');
+  }
+}
+
+function animateTitle(){
+  const el = document.getElementById('heroTitle');
+  el.innerHTML = '';
+  'HITMANA'.split('').forEach((l,i)=>{
+    const s = document.createElement('span');
+    s.textContent = l;
+    s.style.animationDelay = (i*0.12)+'s';
+    el.appendChild(s);
+  });
+}
+
+function renderCountdown(){
+  const target = new Date('2026-09-21T00:00:00');
+  function tick(){
+    const diff = target - new Date();
+    if(diff <= 0){
+      document.getElementById('countdown').innerHTML = '<p style="color:var(--gold);font-size:1.3rem;letter-spacing:0.2em;font-family:system-ui,sans-serif;">¡YA DISPONIBLE!</p>';
+      return;
+    }
+    document.getElementById('cd-d').textContent = pad(Math.floor(diff/86400000));
+    document.getElementById('cd-h').textContent = pad(Math.floor((diff%86400000)/3600000));
+    document.getElementById('cd-m').textContent = pad(Math.floor((diff%3600000)/60000));
+    document.getElementById('cd-s').textContent = pad(Math.floor((diff%60000)/1000));
+  }
+  tick(); setInterval(tick, 1000);
+}
+
+function buildCatalog(){
+  const genres = [...new Set(SONGS.map(s=>s.genre))].sort();
+  const sel = document.getElementById('genreFilter');
+  genres.forEach(g=>{ const o=document.createElement('option'); o.value=g; o.textContent=g; sel.appendChild(o); });
+  renderCatalog();
+}
+
+function renderCatalog(){
+  const q = document.getElementById('searchInput').value.toLowerCase();
+  const g = document.getElementById('genreFilter').value;
+  const l = document.getElementById('langFilter').value;
+  const grid = document.getElementById('catGrid');
+  grid.innerHTML = '';
+  const filtered = SONGS.filter(s =>
+    (!q || s.title.toLowerCase().includes(q) || s.genre.toLowerCase().includes(q)) &&
+    (!g || s.genre === g) &&
+    (!l || s.lang === l)
+  );
+  document.getElementById('catCount').textContent = filtered.length + ' de ' + SONGS.length + ' canciones';
+  if(!filtered.length){
+    grid.innerHTML = '<div class="cat-empty">No se encontraron canciones con ese filtro.</div>';
+    return;
+  }
+  filtered.forEach(s=>{
+    const card = document.createElement('div');
+    card.className = 'song-card';
+    const spotify = s.spotify || null;
+    const youtube = s.youtube || null;
+    card.innerHTML = `
+      <div class="song-num">#${pad(s.num)}</div>
+      <div class="song-title">${s.title}</div>
+      <div class="song-meta">
+        <span class="song-genre">${s.genre}</span>
+        <span class="song-lang">${s.lang === 'EN' ? '🇺🇸 EN' : '🇪🇸 ES'}</span>
+      </div>
+      <div class="song-links">
+        ${spotify
+          ? `<a class="song-btn song-btn-spotify" href="${spotify}" target="_blank">▶ Spotify</a>`
+          : `<span class="song-btn song-btn-disabled">▶ Spotify</span>`}
+        ${youtube
+          ? `<a class="song-btn song-btn-youtube" href="${youtube}" target="_blank">▶ YouTube</a>`
+          : `<span class="song-btn song-btn-disabled">▶ YouTube</span>`}
+      </div>`;
+    grid.appendChild(card);
+  });
+}
+
+document.getElementById('searchInput').addEventListener('input', renderCatalog);
+document.getElementById('genreFilter').addEventListener('change', renderCatalog);
+document.getElementById('langFilter').addEventListener('change', renderCatalog);
+
+animateTitle();
+renderCountdown();
+buildCatalog();
+</script>
+</body>
+</html>
