@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HITMANA — Panel de Administración</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --gold: #C9A84C; --gold-light: #E8C96A; --gold-dim: #8A6E2F;
+    --black: #0A0A0A; --black2: #111111; --black3: #1A1A1A;
+    --bone: #F5F0E8; --muted: #888880; --border: rgba(201,168,76,0.2);
+    --red: #C0392B; --green: #27AE60;
+  }
+  body { background: var(--black); color: var(--bone); font-family: system-ui, sans-serif; min-height: 100vh; }
+
+  /* LOGIN */
+  #loginScreen {
+    min-height: 100vh; display: flex; align-items: center; justify-content: center;
+    background: radial-gradient(ellipse at 50% 50%, rgba(201,168,76,0.06) 0%, transparent 70%);
+  }
+  .login-box {
+    background: var(--black2); border: 0.5px solid var(--border);
+    padding: 3rem 2.5rem; width: 100%; max-width: 380px; text-align: center;
+  }
+  .login-logo { font-family: Georgia, serif; font-size: 2rem; letter-spacing: 0.3em; color: var(--gold); margin-bottom: 0.5rem; }
+  .login-sub { font-size: 0.75rem; color: var(--muted); letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 2rem; }
+  .login-input {
+    width: 100%; background: var(--black3); border: 0.5px solid var(--border);
+    color: var(--bone); padding: 0.8rem 1rem; font-size: 0.9rem;
+    font-family: system-ui, sans-serif; outline: none; margin-bottom: 1rem;
+    text-align: center; letter-spacing: 0.1em;
+  }
+  .login-input:focus { border-color: var(--gold); }
+  .btn-gold {
+    width: 100%; background: var(--gold); color: var(--black); border: none;
+    padding: 0.8rem; font-size: 0.8rem; letter-spacing: 0.2em; text-transform: uppercase;
+    cursor: pointer; font-weight: bold; transition: background 0.2s;
+  }
+  .btn-gold:hover { background: var(--gold-light); }
+  .login-error { color: var(--red); font-size: 0.8rem; margin-top: 0.8rem; display: none; }
+
+  /* ADMIN PANEL */
+  #adminPanel { display: none; }
+  .admin-nav {
+    background: var(--black2); border-bottom: 0.5px solid var(--border);
+    padding: 1rem 2rem; display: flex; align-items: center; justify-content: space-between;
+    position: sticky; top: 0; z-index: 100;
+  }
+  .admin-nav-logo { font-family: Georgia, serif; font-size: 1.2rem; letter-spacing: 0.3em; color: var(--gold); }
+  .admin-nav-right { display: flex; align-items: center; gap: 1rem; }
+  .admin-badge { font-size: 0.7rem; letter-spacing: 0.15em; color: var(--muted); text-transform: uppercase; }
+  .btn-sm {
+    background: transparent; border: 0.5px solid var(--border); color: var(--muted);
+    padding: 0.4rem 0.8rem; font-size: 0.72rem; letter-spacing: 0.1em;
+    text-transform: uppercase; cursor: pointer; transition: all 0.2s;
+  }
+  .btn-sm:hover { border-color: var(--gold); color: var(--gold); }
+  .btn-sm-red { border-color: rgba(192,57,43,0.4); color: var(--red); }
+  .btn-sm-red:hover { border-color: var(--red); background: rgba(192,57,43,0.1); }
+  .btn-sm-green { border-color: rgba(39,174,96,0.4); color: var(--green); }
+  .btn-sm-green:hover { border-color: var(--green); background: rgba(39,174,96,0.1); }
+
+  .admin-body { max-width: 1100px; margin: 0 auto; padding: 2rem; }
+
+  /* STATS */
+  .stats-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 1rem; margin-bottom: 2rem; }
+  .stat-card { background: var(--black2); border: 0.5px solid var(--border); padding: 1.2rem; }
+  .stat-num { font-size: 2rem; color: var(--gold); font-weight: bold; display: block; }
+  .stat-label { font-size: 0.72rem; color: var(--muted); letter-spacing: 0.1em; text-transform: uppercase; margin-top: 0.2rem; }
+
+  /* FORM */
+  .section-title { font-size: 1rem; color: var(--gold); letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 1.5rem; padding-bottom: 0.5rem; border-bottom: 0.5px solid var(--border); }
+  .form-card { background: var(--black2); border: 0.5px solid var(--border); padding: 1.5rem; margin-bottom: 2rem; }
+  .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 1rem; }
+  .form-group { display: flex; flex-direction: column; gap: 0.4rem; }
+  .form-label { font-size: 0.7rem; color: var(--muted); letter-spacing: 0.15em; text-transform: uppercase; }
+  .form-input, .form-select {
+    background: var(--black3); border: 0.5px solid var(--border);
+    color: var(--bone); padding: 0.6rem 0.8rem; font-size: 0.85rem;
+    font-family: system-ui, sans-serif; outline: none;
+  }
+  .form-input:focus, .form-select:focus { border-color: var(--gold); }
+  .form-input::placeholder { color: var(--muted); }
+  .form-select option { background: var(--black2); }
+  .form-actions { display: flex; gap: 0.8rem; flex-wrap: wrap; margin-top: 1rem; }
+  .btn-primary {
+    background: var(--gold); color: var(--black); border: none;
+    padding: 0.6rem 1.5rem; font-size: 0.78rem; letter-spacing: 0.15em;
+    text-transform: uppercase; cursor: pointer; font-weight: bold; transition: background 0.2s;
+  }
+  .btn-primary:hover { background: var(--gold-light); }
+  .btn-cancel {
+    background: transparent; color: var(--muted); border: 0.5px solid var(--border);
+    padding: 0.6rem 1.5rem; font-size: 0.78rem; letter-spacing: 0.15em;
+    text-transform: uppercase; cursor: pointer; transition: all 0.2s;
+  }
+  .btn-cancel:hover { border-color: var(--muted); color: var(--bone); }
+  .form-msg { font-size: 0.8rem; padding: 0.5rem 0; display: none; }
+  .form-msg.success { color: var(--green); display: block; }
+  .form-msg.error { color: var(--red); display: block; }
+
+  /* CATALOG TABLE */
+  .cat-controls { display: flex; gap: 1rem; margin-bottom: 1rem; flex-wrap: wrap; }
+  .search-input {
+    flex: 1; min-width: 200px; background: var(--black2); border: 0.5px solid var(--border);
+    color: var(--bone); padding: 0.6rem 1rem; font-size: 0.85rem; outline: none;
+  }
+  .search-input:focus { border-color: var(--gold); }
+  .search-input::placeholder { color: var(--muted); }
+  .filter-select {
+    background: var(--black2); border: 0.5px solid var(--border); color: var(--muted);
+    padding: 0.6rem 1rem; font-size: 0.82rem; cursor: pointer; outline: none;
+  }
+  .table-wrap { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; }
+  th {
+    background: var(--black3); color: var(--gold); font-size: 0.68rem;
+    letter-spacing: 0.15em; text-transform: uppercase; padding: 0.7rem 0.8rem;
+    text-align: left; border-bottom: 0.5px solid var(--border); white-space: nowrap;
+  }
+  td { padding: 0.7rem 0.8rem; font-size: 0.82rem; border-bottom: 0.5px solid rgba(201,168,76,0.08); vertical-align: middle; }
+  tr:hover td { background: var(--black3); }
+  .td-num { color: var(--gold-dim); font-size: 0.72rem; }
+  .td-title { color: var(--bone); font-weight: 500; max-width: 200px; }
+  .td-genre { color: var(--muted); font-size: 0.75rem; }
+  .td-lang span { font-size: 0.72rem; padding: 0.15rem 0.4rem; border: 0.5px solid var(--gold-dim); color: var(--gold-dim); }
+  .td-links { display: flex; gap: 0.3rem; flex-wrap: wrap; }
+  .link-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+  .link-dot-green { background: var(--green); }
+  .link-dot-grey { background: var(--muted); opacity: 0.3; }
+  .td-actions { display: flex; gap: 0.4rem; white-space: nowrap; }
+
+  /* MODAL */
+  .modal-overlay {
+    position: fixed; inset: 0; background: rgba(0,0,0,0.85);
+    display: none; align-items: center; justify-content: center; z-index: 200; padding: 1rem;
+  }
+  .modal-overlay.open { display: flex; }
+  .modal {
+    background: var(--black2); border: 0.5px solid var(--border);
+    padding: 2rem; width: 100%; max-width: 620px; max-height: 90vh; overflow-y: auto;
+  }
+  .modal-title { font-size: 1rem; color: var(--gold); letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 1.5rem; }
+
+  /* TOAST */
+  .toast {
+    position: fixed; bottom: 2rem; right: 2rem; z-index: 300;
+    background: var(--black2); border: 0.5px solid var(--gold);
+    padding: 0.8rem 1.5rem; font-size: 0.82rem; color: var(--gold);
+    opacity: 0; transition: opacity 0.3s; pointer-events: none;
+  }
+  .toast.show { opacity: 1; }
+
+  .export-section { margin-top: 2rem; padding-top: 2rem; border-top: 0.5px solid var(--border); }
+
+  @media(max-width:600px) {
+    .admin-body { padding: 1rem; }
+    .admin-nav { padding: 0.8rem 1rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="loginScreen">
+  <div class="login-box">
+    <p class="login-logo">HITMANA</p>
+    <p class="login-sub">Panel de Administración</p>
+    <input class="login-input" type="password" id="pwInput" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()">
+    <button class="btn-gold" onclick="doLogin()">Entrar</button>
+    <p class="login-error" id="loginError">Contraseña incorrecta</p>
+  </div>
+</div>
+
+<!-- ADMIN PANEL -->
+<div id="adminPanel">
+  <nav class="admin-nav">
+    <span class="admin-nav-logo">HITMANA</span>
+    <div class="admin-nav-right">
+      <span class="admin-badge">Admin</span>
+      <button class="btn-sm" onclick="exportCatalog()">Exportar JSON</button>
+      <button class="btn-sm btn-sm-red" onclick="doLogout()">Salir</button>
+    </div>
+  </nav>
+
+  <div class="admin-body">
+
+    <!-- STATS -->
+    <div class="stats-row">
+      <div class="stat-card"><span class="stat-num" id="statTotal">0</span><span class="stat-label">Canciones</span></div>
+      <div class="stat-card"><span class="stat-num" id="statES">0</span><span class="stat-label">En Español</span></div>
+      <div class="stat-card"><span class="stat-num" id="statEN">0</span><span class="stat-label">En Inglés</span></div>
+      <div class="stat-card"><span class="stat-num" id="statLinks">0</span><span class="stat-label">Con Links</span></div>
+    </div>
+
+    <!-- FORM ADD -->
+    <div class="form-card">
+      <p class="section-title" id="formTitle">Agregar canción</p>
+      <input type="hidden" id="editId" value="">
+      <div class="form-grid">
+        <div class="form-group">
+          <label class="form-label">Número #</label>
+          <input class="form-input" type="number" id="fNum" placeholder="78">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Título</label>
+          <input class="form-input" type="text" id="fTitle" placeholder="Nombre de la canción">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Género</label>
+          <input class="form-input" type="text" id="fGenre" placeholder="Afro-Deephouse" list="genreList">
+          <datalist id="genreList"></datalist>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Idioma</label>
+          <select class="form-select" id="fLang">
+            <option value="ES">Español</option>
+            <option value="EN">Inglés</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-grid">
+        <div class="form-group">
+          <label class="form-label">Link Spotify</label>
+          <input class="form-input" type="url" id="fSpotify" placeholder="https://open.spotify.com/...">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Link YouTube</label>
+          <input class="form-input" type="url" id="fYoutube" placeholder="https://youtube.com/...">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Link Audiomack</label>
+          <input class="form-input" type="url" id="fAudiomack" placeholder="https://audiomack.com/...">
+        </div>
+      </div>
+      <div class="form-actions">
+        <button class="btn-primary" id="formBtn" onclick="saveSong()">Agregar canción</button>
+        <button class="btn-cancel" id="cancelBtn" style="display:none" onclick="cancelEdit()">Cancelar</button>
+      </div>
+      <p class="form-msg" id="formMsg"></p>
+    </div>
+
+    <!-- CATALOG -->
+    <div class="form-card">
+      <p class="section-title">Catálogo completo</p>
+      <div class="cat-controls">
+        <input class="search-input" type="text" id="adminSearch" placeholder="Buscar..." oninput="renderTable()">
+        <select class="filter-select" id="adminLang" onchange="renderTable()">
+          <option value="">Todos</option>
+          <option value="ES">Español</option>
+          <option value="EN">Inglés</option>
+        </select>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Título</th>
+              <th>Género</th>
+              <th>Idioma</th>
+              <th>Links</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody id="songTable"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- EXPORT -->
+    <div class="export-section">
+      <p class="section-title">Exportar catálogo</p>
+      <p style="color:var(--muted);font-size:0.82rem;margin-bottom:1rem;">Descarga el catálogo actualizado como JSON para integrarlo en index.html.</p>
+      <button class="btn-primary" onclick="exportCatalog()">Descargar catalog.json</button>
+    </div>
+
+  </div>
+</div>
+
+<!-- MODAL ELIMINAR -->
+<div class="modal-overlay" id="deleteModal">
+  <div class="modal">
+    <p class="modal-title">Confirmar eliminación</p>
+    <p style="color:var(--muted);margin-bottom:1.5rem;font-size:0.9rem;">¿Estás seguro de que quieres eliminar esta canción? Esta acción no se puede deshacer.</p>
+    <p style="color:var(--bone);margin-bottom:1.5rem;" id="deleteTitle"></p>
+    <div style="display:flex;gap:0.8rem;">
+      <button class="btn-primary" style="background:var(--red);color:white;" onclick="confirmDelete()">Eliminar</button>
+      <button class="btn-cancel" onclick="closeModal()">Cancelar</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ─── CONTRASEÑA ───────────────────────────────────────────────
+// Cambia "hitmana2026" por tu contraseña personal
+const PASSWORD = "hitmana2026";
+
+function doLogin(){
+  const pw = document.getElementById('pwInput').value;
+  if(pw === PASSWORD){
+    document.getElementById('loginScreen').style.display = 'none';
+    document.getElementById('adminPanel').style.display = 'block';
+    initAdmin();
+  } else {
+    document.getElementById('loginError').style.display = 'block';
+    document.getElementById('pwInput').value = '';
+  }
+}
+
+function doLogout(){
+  document.getElementById('adminPanel').style.display = 'none';
+  document.getElementById('loginScreen').style.display = 'flex';
+  document.getElementById('pwInput').value = '';
+}
+
+// ─── DATOS ────────────────────────────────────────────────────
+const STORE_KEY = 'hitmana_admin_v1';
+
+const DEFAULT_SONGS = [
+  {id:1,num:1,title:"Patria o Muerte",genre:"Sin clasificar",lang:"ES",spotify:"",youtube:"",audiomack:""},
+  {id:2,num:2,title:"Los Golpistas / Traidores",genre:"Protesta",lang:"ES",spotify:"",youtube:"",audiomack:""},
+  {id:3,num:3,title:"Alumbrones",genre:"Protesta",lang:"ES",spotify:"",youtube:"",audiomack:""},
+  {id:4,num:4,title:"Lágrimas de la Tierra",genre:"Sin clasificar",lang:"ES",spotify:"",youtube:"",audiomack:""},
+  {id:5,num:5,title:"Sálvame del Dolor",genre:"Sin clasificar",lang:"ES",spotify:"",youtube:"",audiomack:""},
+  {id:6,num:6,title:"Sueño Americano",genre:"Sin clasificar",lang:"ES",spotify:"",youtube:"",audiomack:""},
+  {id:7,num:7,title:"Fiesta en la Casita",genre:"Sin clasificar",lang:"ES",spotify:"",youtube:"",audiomack:""},
+  {id:8,num:8,title:"Mi Corazón Está Firme",genre:"Salsa",lang:"ES",spotify:"",youtube:"",audiomack:""},
+  {id:9,num:9,title:"En Getsemaní",genre:"Balada",lang:"ES",spotify:"",youtube:"",audiomack:""},
+  {id:10,num:10,title:"Las Rosas Me Avisaron",genre:"Sin clasificar",lang:"ES",spotify:"",youtube:"",audiomack:""},
+  {id:11,num:11,title:"La Mejor Venganza",genre:"Sin clasificar",lang:"ES",spotify:"",youtube:"",audiomack:""},
+  {id:12,num:12,title:"Las Bendiciones Se Andan",genre:"Sin clasificar",lang:"ES",spotify:"",youtube:"",audiomack:""},
+  {id:13,num:13,title:"El Patrón Descansó",genre:"Sin clasificar",lang:"ES",spotify:"",youtube:"",audiomack:""},
+  {id:14,num:14,title:"76 Millas de Amor",genre:"Salsa",lang:"ES",spotify:"",youtube:"",audiomack:""},
+  {id:15,num:15,title:"Un Poquito de Tu Amor",genre:"Sin clasificar",lang:"ES",spotify:"",youtube:"",audiomack:""},
+  {id:16,num:16,title:"Los Cinco Maestros",genre:"Sin clasificar",lang:"ES",spotify:"",youtube:"",audiomack:""},
+  {id:17,num:17,title:"Gente de Bien",genre:"Sin clasificar",lang:"ES",spotify:"",youtube:"",audiomack:""},
+  {id:18,num:18,title:"Himno del Vago",genre:"Sin clasificar",lang:"ES",spotify:"",youtube:"",audiomack:""},
+  {id:19,num:19,title:"Era Más Fácil Antes",genre:"Sin clasificar",lang:"ES",spotify:"",youtube:"",audiomack:""},
+  {id:20,num:20,title:"Solo en los Pies",genre:"Sin clasificar",lang:"ES",spotify:"",youtube:"",audiomack:""},
+  {id:21,num:21,title:"Amor de Verdad",genre:"Sin clasificar",lang:"ES",spotify:"",youtube:"",audiomack:""},
+  {id:22,num:22,title:"El Caribe No Para",genre:"Sin clasificar",lang:"ES",spotify:"",youtube:"",audiomack:""},
+  {id:23,num:23,title:"El Humo Habla",genre:"Son Cubano",lang:"ES",spotify:"",youtube:"",audiomack:""},
+  {id:24,num:24,title:"Así Se Vive",genre:"Pop Latino",lang:"ES",spotify:"",youtube:"",audiomack:""},
+  {id:25,num:25,title:"La Hora del Mundo",genre:"Balada",lang:"ES",spotify:"",youtube:"",audiomack:""},
+  {id:26,num:26,title:"El Arte de Volver",genre:"Balada",lang:"ES",spotify:"",youtube:"",audiomack:""},
+  {id:27,num:27,title:"Sin Color, Sin Amor",genre:"Afrobeat",lang:"ES",spotify:"",youtube:"",audiomack:""},
+  {id:28,num:28,title:"Yo Soy el Günther",genre:"Salsa",lang:"ES",spotify:"",youtube:"",audiomack:""},
+  {id:29,num:29,title:"La Paradoja",genre:"Rock Acústico",lang:"ES",spotify:"",youtube:"",audiomack:""},
+  {id:30,num:30,title:"El Sol Está Nervioso",genre:"Afrobeat",lang:"ES",spotify:"",youtube:"",audiomack:""},
+  {id:31,num:31,title:"Agua de Coco",genre:"Afrobeat",lang:"ES",spotify:"",youtube:"",audiomack:""},
+  {id:32,num:32,title:"Mi Bola de Cristal",genre:"Reggaetón",lang:"ES",spotify:"",youtube:"",audiomack:""},
+  {id:33,num:33,title:"Tú Eres el Ruido",genre:"Merengue Electrónico",lang:"ES",spotify:"",youtube:"",audiomack:""},
+  {id:34,num:34,title:"¿Por Qué Me Preguntas?",genre:"Reggaetón",lang:"ES",spotify:"",youtube:"",audiomack:""},
+  {id:35,num:35,title:"Ya Está en Ti",genre:"Hip-Hop",lang:"ES",spotify:"",youtube:"",audiomack:""},
+  {id:36,num:36,title:"Silent Empire (Taylor)",genre:"Hip-Hop / Trap",lang:"EN",spotify:"",youtube:"",audiomack:""},
+  {id:37,num:37,title:"La Temperatura",genre:"Salsa / Son Cubano",lang:"ES",spotify:"",youtube:"",audiomack:""},
+  {id:38,num:38,title:"Envidiosa",genre:"Reggaetón",lang:"ES",spotify:"",youtube:"",audiomack:""},
+  {id:39,num:39,title:"Perfect Ruins",genre:"Balada Épica",lang:"EN",spotify:"",youtube:"",audiomack:""},
+  {id:40,num:40,title:"The Possible",genre:"Hip-Hop",lang:"EN",spotify:"",youtube:"",audiomack:""},
+  {id:41,num:41,title:"La Mochila",genre:"Balada Épica / Soul",lang:"ES",spotify:"",youtube:"",audiomack:""},
+  {id:42,num:42,title:"Lo Que Estás Perdiendo (V1)",genre:"Balada Épica",lang:"ES",spotify:"",youtube:"",audiomack:""},
+  {id:43,num:43,title:"Vicio Fino",genre:"Reggaetón Sensual",lang:"ES",spotify:"",youtube:"",audiomack:""},
+  {id:44,num:44,title:"Cierra la Puerta Que Voy Bajando",genre:"Reggaetón Urbano",lang:"ES",spotify:"",youtube:"",audiomack:""},
+  {id:45,num:45,title:"Canción del Guaguancó (Los Papines)",genre:"Son Cubano / Guaguancó",lang:"ES",spotify:"",youtube:"",audiomack:""},
+  {id:46,num:46,title:"The Deal",genre:"Hip-Hop / Trap",lang:"EN",spotify:"",youtube:"",audiomack:""},
+  {id:47,num:47,title:"Cara Bonita, Corazón de Piedra",genre:"Balada Épica",lang:"ES",spotify:"",youtube:"",audiomack:""},
+  {id:48,num:48,title:"Tres de Azúcar y Dos de Café",genre:"Reparto / Urbano Cubano",lang:"ES",spotify:"",youtube:"",audiomack:""},
+  {id:49,num:49,title:"El Arte de Ensartar la Aguja",genre:"Bachata Reflexiva",lang:"ES",spotify:"",youtube:"",audiomack:""},
+  {id:50,num:50,title:"Lo Que Estás Perdiendo",genre:"Balada Épica",lang:"ES",spotify:"",youtube:"",audiomack:""},
+  {id:51,num:51,title:"Qué Puede Hacer un Cubano",genre:"Guaguancó / Reparto",lang:"ES",spotify:"",youtube:"",audiomack:""},
+  {id:52,num:52,title:"Bumerán",genre:"Salsa Repartera",lang:"ES",spotify:"",youtube:"",audiomack:""},
+  {id:53,num:53,title:"Moneda Dura",genre:"Soul Reflexivo",lang:"ES",spotify:"",youtube:"",audiomack:""},
+  {id:54,num:54,title:"Gente Buena Cuidado",genre:"Reparto / Guaguancó",lang:"ES",spotify:"",youtube:"",audiomack:""},
+  {id:55,num:55,title:"Mayo Divino",genre:"Soul / Gospel Moderno",lang:"ES",spotify:"",youtube:"",audiomack:""},
+  {id:56,num:56,title:"Déjalo Ganar",genre:"Merengue Electrónico",lang:"ES",spotify:"",youtube:"",audiomack:""},
+  {id:57,num:57,title:"Dueño del Silencio",genre:"Hip-Hop / Trap Latino",lang:"ES",spotify:"",youtube:"",audiomack:""},
+  {id:58,num:58,title:"Las Paredes",genre:"Soul",lang:"ES",spotify:"",youtube:"",audiomack:""},
+  {id:59,num:59,title:"El Ojo",genre:"Balada Soul / Jazz Moderno",lang:"ES",spotify:"",youtube:"",audiomack:""},
+  {id:60,num:60,title:"Lujo Invisible",genre:"Hip-Hop Consciente",lang:"ES",spotify:"",youtube:"",audiomack:""},
+  {id:61,num:61,title:"Novo Atrevido",genre:"Balada Épica",lang:"ES",spotify:"",youtube:"",audiomack:""},
+  {id:62,num:62,title:"Me Gustó Lo Que Vi",genre:"Reggaetón / Dembow",lang:"ES",spotify:"",youtube:"",audiomack:""},
+  {id:63,num:63,title:"Galifornia",genre:"Afrobeat",lang:"ES",spotify:"",youtube:"",audiomack:""},
+  {id:64,num:64,title:"Nadie Se Ha Dado Cuenta",genre:"Salsa Romántica",lang:"ES",spotify:"",youtube:"",audiomack:""},
+  {id:65,num:65,title:"El Filo",genre:"Afro-Deephouse",lang:"ES",spotify:"",youtube:"",audiomack:""},
+  {id:66,num:66,title:"Mi Concierto",genre:"Bachata",lang:"ES",spotify:"",youtube:"",audiomack:""},
+  {id:67,num:67,title:"El Rocío y la Sed",genre:"Balada Épica",lang:"ES",spotify:"",youtube:"",audiomack:""},
+  {id:68,num:68,title:"Toca mis Manos",genre:"Afro-Deephouse",lang:"ES",spotify:"",youtube:"",audiomack:""},
+  {id:69,num:69,title:"Tu Linaje",genre:"Afro-Deephouse",lang:"ES",spotify:"",youtube:"",audiomack:""},
+  {id:70,num:70,title:"Tus Brazos",genre:"Afro-Deephouse",lang:"ES",spotify:"",youtube:"",audiomack:""},
+  {id:71,num:71,title:"Bailando con el Viento",genre:"Afro-Deephouse",lang:"ES",spotify:"",youtube:"",audiomack:""},
+  {id:72,num:72,title:"Bienvenido Candela",genre:"Reparto Cubano",lang:"ES",spotify:"",youtube:"",audiomack:""},
+  {id:73,num:73,title:"Miguelón",genre:"Reparto Cubano",lang:"ES",spotify:"",youtube:"",audiomack:""},
+  {id:74,num:73,title:"Destello",genre:"Afro-Deephouse",lang:"ES",spotify:"",youtube:"",audiomack:""},
+  {id:75,num:74,title:"Atrévete",genre:"Afro-Deephouse",lang:"ES",spotify:"",youtube:"",audiomack:""},
+  {id:76,num:75,title:"Pendiente Estuve de Ti",genre:"Bachata",lang:"ES",spotify:"",youtube:"",audiomack:""},
+  {id:77,num:76,title:"Decide o Divide",genre:"Salsa",lang:"ES",spotify:"",youtube:"",audiomack:""},
+  {id:78,num:77,title:"Razorbill",genre:"Afro-Deephouse",lang:"EN",spotify:"",youtube:"",audiomack:""},
+  {id:79,num:78,title:"Ya no quiero cambiar",genre:"Afro-Deephouse",lang:"ES",spotify:"",youtube:"",audiomack:""}
+];
+
+let songs = [];
+let nextId = 100;
+let deleteTargetId = null;
+
+function loadSongs(){
+  try {
+    const saved = localStorage.getItem(STORE_KEY);
+    if(saved){
+      const parsed = JSON.parse(saved);
+      songs = parsed.songs || DEFAULT_SONGS;
+      nextId = parsed.nextId || (Math.max(...songs.map(s=>s.id)) + 1);
+    } else {
+      songs = JSON.parse(JSON.stringify(DEFAULT_SONGS));
+      nextId = 100;
+      saveSongs();
+    }
+  } catch(e) {
+    songs = JSON.parse(JSON.stringify(DEFAULT_SONGS));
+    nextId = 100;
+  }
+}
+
+function saveSongs(){
+  localStorage.setItem(STORE_KEY, JSON.stringify({ songs, nextId }));
+}
+
+function initAdmin(){
+  loadSongs();
+  updateStats();
+  renderTable();
+  populateGenreList();
+}
+
+function updateStats(){
+  document.getElementById('statTotal').textContent = songs.length;
+  document.getElementById('statES').textContent = songs.filter(s=>s.lang==='ES').length;
+  document.getElementById('statEN').textContent = songs.filter(s=>s.lang==='EN').length;
+  document.getElementById('statLinks').textContent = songs.filter(s=>s.spotify||s.youtube||s.audiomack).length;
+}
+
+function populateGenreList(){
+  const dl = document.getElementById('genreList');
+  const genres = [...new Set(songs.map(s=>s.genre))].sort();
+  dl.innerHTML = genres.map(g=>`<option value="${g}">`).join('');
+}
+
+function renderTable(){
+  const q = document.getElementById('adminSearch').value.toLowerCase();
+  const l = document.getElementById('adminLang').value;
+  const tbody = document.getElementById('songTable');
+  const filtered = songs.filter(s =>
+    (!q || s.title.toLowerCase().includes(q) || s.genre.toLowerCase().includes(q)) &&
+    (!l || s.lang === l)
+  ).sort((a,b) => a.num - b.num || a.title.localeCompare(b.title));
+
+  if(!filtered.length){
+    tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;color:var(--muted);padding:2rem;">No se encontraron canciones</td></tr>`;
+    return;
+  }
+  tbody.innerHTML = filtered.map(s => `
+    <tr>
+      <td class="td-num">#${String(s.num).padStart(2,'0')}</td>
+      <td class="td-title">${s.title}</td>
+      <td class="td-genre">${s.genre}</td>
+      <td class="td-lang"><span>${s.lang}</span></td>
+      <td>
+        <div class="td-links">
+          <span class="link-dot ${s.spotify ? 'link-dot-green' : 'link-dot-grey'}" title="Spotify"></span>
+          <span class="link-dot ${s.youtube ? 'link-dot-green' : 'link-dot-grey'}" title="YouTube"></span>
+          <span class="link-dot ${s.audiomack ? 'link-dot-green' : 'link-dot-grey'}" title="Audiomack"></span>
+        </div>
+      </td>
+      <td>
+        <div class="td-actions">
+          <button class="btn-sm btn-sm-green" onclick="editSong(${s.id})">Editar</button>
+          <button class="btn-sm btn-sm-red" onclick="openDelete(${s.id})">Eliminar</button>
+        </div>
+      </td>
+    </tr>
+  `).join('');
+}
+
+function saveSong(){
+  const num = parseInt(document.getElementById('fNum').value);
+  const title = document.getElementById('fTitle').value.trim();
+  const genre = document.getElementById('fGenre').value.trim();
+  const lang = document.getElementById('fLang').value;
+  const spotify = document.getElementById('fSpotify').value.trim();
+  const youtube = document.getElementById('fYoutube').value.trim();
+  const audiomack = document.getElementById('fAudiomack').value.trim();
+  const editId = document.getElementById('editId').value;
+
+  if(!num || !title || !genre){
+    showMsg('Por favor completa número, título y género.', 'error');
+    return;
+  }
+
+  if(editId){
+    const idx = songs.findIndex(s=>s.id===parseInt(editId));
+    if(idx > -1){
+      songs[idx] = { ...songs[idx], num, title, genre, lang, spotify, youtube, audiomack };
+      showToast('Canción actualizada ✓');
+    }
+    cancelEdit();
+  } else {
+    songs.push({ id: nextId++, num, title, genre, lang, spotify, youtube, audiomack });
+    showToast('Canción agregada ✓');
+    clearForm();
+  }
+
+  saveSongs();
+  updateStats();
+  renderTable();
+  populateGenreList();
+}
+
+function editSong(id){
+  const s = songs.find(s=>s.id===id);
+  if(!s) return;
+  document.getElementById('editId').value = id;
+  document.getElementById('fNum').value = s.num;
+  document.getElementById('fTitle').value = s.title;
+  document.getElementById('fGenre').value = s.genre;
+  document.getElementById('fLang').value = s.lang;
+  document.getElementById('fSpotify').value = s.spotify || '';
+  document.getElementById('fYoutube').value = s.youtube || '';
+  document.getElementById('fAudiomack').value = s.audiomack || '';
+  document.getElementById('formTitle').textContent = 'Editar canción';
+  document.getElementById('formBtn').textContent = 'Guardar cambios';
+  document.getElementById('cancelBtn').style.display = 'inline-block';
+  document.getElementById('fTitle').focus();
+  document.querySelector('.form-card').scrollIntoView({behavior:'smooth'});
+}
+
+function cancelEdit(){
+  document.getElementById('editId').value = '';
+  document.getElementById('formTitle').textContent = 'Agregar canción';
+  document.getElementById('formBtn').textContent = 'Agregar canción';
+  document.getElementById('cancelBtn').style.display = 'none';
+  clearForm();
+}
+
+function clearForm(){
+  ['fNum','fTitle','fGenre','fSpotify','fYoutube','fAudiomack'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('fLang').value = 'ES';
+  document.getElementById('formMsg').className = 'form-msg';
+}
+
+function openDelete(id){
+  const s = songs.find(s=>s.id===id);
+  if(!s) return;
+  deleteTargetId = id;
+  document.getElementById('deleteTitle').textContent = `#${s.num} — ${s.title}`;
+  document.getElementById('deleteModal').classList.add('open');
+}
+
+function confirmDelete(){
+  songs = songs.filter(s=>s.id !== deleteTargetId);
+  saveSongs();
+  updateStats();
+  renderTable();
+  closeModal();
+  showToast('Canción eliminada');
+}
+
+function closeModal(){
+  document.getElementById('deleteModal').classList.remove('open');
+  deleteTargetId = null;
+}
+
+function exportCatalog(){
+  const data = songs.map(s => ({
+    num: s.num, title: s.title, genre: s.genre, lang: s.lang,
+    spotify: s.spotify || null, youtube: s.youtube || null, audiomack: s.audiomack || null
+  })).sort((a,b) => a.num - b.num);
+  const blob = new Blob([JSON.stringify(data, null, 2)], {type:'application/json'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'hitmana_catalog.json';
+  a.click();
+  showToast('Catálogo exportado ✓');
+}
+
+function showMsg(text, type){
+  const el = document.getElementById('formMsg');
+  el.textContent = text;
+  el.className = 'form-msg ' + type;
+}
+
+function showToast(msg){
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+document.getElementById('pwInput').addEventListener('keydown', e => {
+  if(e.key === 'Enter') doLogin();
+});
+</script>
+</body>
+</html>
