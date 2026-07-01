@@ -43,7 +43,9 @@
     min-height: 100vh; display: flex; flex-direction: column;
     align-items: center; justify-content: center;
     text-align: center; padding: 6rem 2rem 4rem;
-    background: radial-gradient(ellipse at 50% 60%, rgba(201,168,76,0.06) 0%, transparent 70%);
+    background: linear-gradient(rgba(10,10,10,0.72) 0%, rgba(10,10,10,0.55) 50%, rgba(10,10,10,0.82) 100%),
+                url('assets/hitmana-hero.png') center center / cover no-repeat;
+    position: relative;
   }
   .hero-eyebrow { font-family: system-ui,sans-serif; font-size: 0.72rem; letter-spacing: 0.4em; text-transform: uppercase; color: var(--gold); margin-bottom: 2rem; }
   .hero-title { font-size: clamp(4rem, 14vw, 10rem); font-weight: bold; letter-spacing: 0.15em; line-height: 1; color: var(--bone); }
@@ -66,6 +68,13 @@
   .btn-gold:hover { background: var(--gold-light); }
   .btn-outline { background: transparent; color: var(--gold); border: 1px solid var(--gold); padding: 0.75rem 2rem; font-family: system-ui,sans-serif; font-size: 0.8rem; letter-spacing: 0.2em; text-transform: uppercase; cursor: pointer; transition: all 0.2s; }
   .btn-outline:hover { background: var(--gold); color: var(--black); }
+  .platform-bar { background: #111; border-top: 1px solid #2a2a2a; border-bottom: 1px solid #2a2a2a; padding: 1rem 2rem; display: flex; justify-content: center; align-items: center; gap: 2rem; flex-wrap: wrap; }
+  .platform-btn { display: flex; align-items: center; gap: 0.5rem; text-decoration: none; font-family: system-ui,sans-serif; font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; font-weight: bold; padding: 0.5rem 1.2rem; border: 1px solid #333; transition: all 0.2s; color: var(--bone); }
+  .platform-btn:hover { border-color: var(--gold); color: var(--gold); }
+  .platform-btn.spotify:hover { border-color: #1DB954; color: #1DB954; }
+  .platform-btn.youtube:hover { border-color: #FF0000; color: #FF0000; }
+  .platform-btn.tiktok:hover { border-color: #69C9D0; color: #69C9D0; }
+  .platform-btn.audiomack:hover { border-color: #FFA500; color: #FFA500; }
 
   /* SECTIONS */
   .section-wrap { padding: 5rem 2rem; max-width: 900px; margin: 0 auto; }
@@ -175,6 +184,14 @@
   </div>
 </section>
 
+<!-- PLATFORM BAR -->
+<div class="platform-bar">
+  <a class="platform-btn spotify" href="https://open.spotify.com/playlist/19QT55fiyONUqTRqEBPAvw?si=JFMP42gESEygsIGRWZFDtw" target="_blank">♫ Spotify</a>
+  <a class="platform-btn youtube" href="https://www.youtube.com/@Hitmanaventure" target="_blank">▶ YouTube</a>
+  <a class="platform-btn tiktok" href="https://www.tiktok.com/@hitmana8" target="_blank">◈ TikTok</a>
+  <a class="platform-btn audiomack" href="https://audiomack.com/hitmanamix" target="_blank">♪ Audiomack</a>
+</div>
+
 <!-- BIO -->
 <div class="border-top">
 <div class="section-wrap" id="bio">
@@ -202,13 +219,13 @@
       <span class="fz-icon">♪</span>
       <p class="fz-title">Escuchar ahora</p>
       <p class="fz-desc">Toda la música de HITMANA disponible en plataformas globales vía TuneCore.</p>
-      <span class="fz-link">Spotify · Apple Music →</span>
+      <a class="fz-link" href="https://open.spotify.com/playlist/19QT55fiyONUqTRqEBPAvw?si=JFMP42gESEygsIGRWZFDtw" target="_blank">Escuchar en Spotify →</a>
     </div>
     <div class="fz-card">
       <span class="fz-icon">✦</span>
       <p class="fz-title">TikTok & YouTube</p>
       <p class="fz-desc">Contenido exclusivo, detrás de cámaras y los mejores momentos del estudio.</p>
-      <span class="fz-link">Seguir en TikTok →</span>
+      <a class="fz-link" href="https://www.tiktok.com/@hitmana8" target="_blank">Seguir en TikTok →</a>
     </div>
     <div class="fz-card">
       <span class="fz-icon">◈</span>
@@ -265,9 +282,9 @@
   <ul class="footer-links">
     <li><a href="https://www.ascap.com" target="_blank">ASCAP</a></li>
     <li><a href="https://www.tunecore.com" target="_blank">TuneCore</a></li>
-    <li><a href="#" target="_blank">TikTok</a></li>
-    <li><a href="#" target="_blank">YouTube</a></li>
-    <li><a href="#" target="_blank">Spotify</a></li>
+    <li><a href="https://www.tiktok.com/@hitmana8" target="_blank">TikTok</a></li>
+    <li><a href="https://www.youtube.com/@Hitmanaventure" target="_blank">YouTube</a></li>
+    <li><a href="https://open.spotify.com/playlist/19QT55fiyONUqTRqEBPAvw?si=JFMP42gESEygsIGRWZFDtw" target="_blank">Spotify</a></li>
   </ul>
   <p class="footer-copy">© 2026 HITMANA Ventures LLC · Todos los derechos reservados · hitmana.com</p>
 </footer>
