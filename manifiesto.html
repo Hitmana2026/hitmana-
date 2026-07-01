@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>El Manifiesto — HITMANA</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black: #0a0a0a;
+    --dark: #1A1A1A;
+    --gold: #C9A84C;
+    --gold-light: #e0bf70;
+    --bone: #F0EBE1;
+    --muted: #888;
+    --dim: #333;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--black);
+    color: var(--bone);
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    overflow-x: hidden;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    padding: 1.2rem 2.5rem;
+    display: flex; justify-content: space-between; align-items: center;
+    background: rgba(10,10,10,0.92);
+    border-bottom: 1px solid #1e1e1e;
+  }
+  .nav-logo {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.85rem; letter-spacing: 0.4em;
+    text-transform: uppercase; color: var(--gold);
+    text-decoration: none; font-weight: 500;
+  }
+  .nav-back {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.72rem; letter-spacing: 0.2em;
+    text-transform: uppercase; color: var(--muted);
+    text-decoration: none; transition: color 0.2s;
+  }
+  .nav-back:hover { color: var(--gold); }
+
+  /* HERO */
+  .manifesto-hero {
+    min-height: 60vh;
+    display: flex; flex-direction: column;
+    justify-content: flex-end; align-items: center;
+    padding: 8rem 2rem 4rem;
+    text-align: center;
+    background: linear-gradient(to bottom, rgba(10,10,10,0.4) 0%, rgba(10,10,10,0.95) 100%),
+                url('hitmana-hero.png') center 30% / cover no-repeat;
+    border-bottom: 1px solid var(--dim);
+  }
+  .hero-eyebrow {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.68rem; letter-spacing: 0.5em;
+    text-transform: uppercase; color: var(--gold);
+    margin-bottom: 1.5rem;
+  }
+  .hero-title {
+    font-size: clamp(3rem, 10vw, 7rem);
+    font-weight: 300; letter-spacing: 0.08em;
+    line-height: 1; color: var(--bone);
+    font-style: italic;
+  }
+  .hero-title strong {
+    font-weight: 700; font-style: normal;
+    color: var(--gold);
+  }
+  .hero-sub {
+    margin-top: 1.5rem;
+    font-size: 1.1rem; color: var(--muted);
+    font-style: italic; max-width: 500px;
+    line-height: 1.6;
+  }
+  .gold-line {
+    width: 50px; height: 1px;
+    background: var(--gold); margin: 2rem auto 0;
+  }
+
+  /* INTRO */
+  .intro-section {
+    max-width: 720px; margin: 0 auto;
+    padding: 5rem 2rem;
+    text-align: center;
+    border-bottom: 1px solid var(--dim);
+  }
+  .intro-section p {
+    font-size: 1.35rem; line-height: 1.9;
+    color: var(--bone); font-weight: 300;
+  }
+  .intro-section em { color: var(--gold); font-style: italic; }
+
+  /* LAWS */
+  .laws-section {
+    max-width: 860px; margin: 0 auto;
+    padding: 4rem 2rem 6rem;
+  }
+  .laws-header {
+    text-align: center; margin-bottom: 4rem;
+  }
+  .laws-header p {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.68rem; letter-spacing: 0.5em;
+    text-transform: uppercase; color: var(--gold);
+    margin-bottom: 1rem;
+  }
+  .laws-header h2 {
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 300; font-style: italic;
+    color: var(--bone); letter-spacing: 0.05em;
+  }
+
+  .law {
+    display: grid;
+    grid-template-columns: 80px 1fr;
+    gap: 2rem;
+    padding: 3rem 0;
+    border-bottom: 1px solid #1e1e1e;
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .law.visible { opacity: 1; transform: translateY(0); }
+  .law:last-child { border-bottom: none; }
+
+  .law-num {
+    font-size: 3.5rem; font-weight: 700;
+    color: var(--dim); line-height: 1;
+    font-family: 'DM Sans', sans-serif;
+    padding-top: 0.2rem;
+    transition: color 0.3s;
+  }
+  .law:hover .law-num { color: var(--gold); }
+
+  .law-content {}
+  .law-title {
+    font-size: 1.6rem; font-weight: 600;
+    color: var(--gold); margin-bottom: 0.75rem;
+    letter-spacing: 0.03em;
+  }
+  .law-body {
+    font-size: 1.05rem; line-height: 1.85;
+    color: #bbb; font-weight: 300;
+  }
+  .law-body em { color: var(--bone); font-style: italic; }
+
+  /* CLOSING */
+  .closing-section {
+    background: linear-gradient(to bottom, var(--black), #0f0c00, var(--black));
+    padding: 6rem 2rem;
+    text-align: center;
+    border-top: 1px solid var(--dim);
+  }
+  .closing-section blockquote {
+    font-size: clamp(1.4rem, 3.5vw, 2.2rem);
+    font-style: italic; font-weight: 300;
+    color: var(--bone); max-width: 680px;
+    margin: 0 auto 2rem; line-height: 1.7;
+  }
+  .closing-section blockquote strong {
+    color: var(--gold); font-style: normal; font-weight: 700;
+  }
+  .closing-attr {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.72rem; letter-spacing: 0.4em;
+    text-transform: uppercase; color: var(--muted);
+  }
+
+  /* FOOTER */
+  footer {
+    background: #050505;
+    border-top: 1px solid #1a1a1a;
+    padding: 2.5rem 2rem;
+    text-align: center;
+  }
+  .footer-logo {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1rem; letter-spacing: 0.4em;
+    text-transform: uppercase; color: var(--gold);
+    font-weight: 700; margin-bottom: 0.75rem;
+  }
+  .footer-copy {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.68rem; letter-spacing: 0.15em;
+    color: var(--muted);
+  }
+  .footer-back {
+    display: inline-block; margin-top: 1.5rem;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.72rem; letter-spacing: 0.25em;
+    text-transform: uppercase; color: var(--gold);
+    text-decoration: none; border: 1px solid var(--dim);
+    padding: 0.6rem 1.5rem; transition: all 0.2s;
+  }
+  .footer-back:hover { border-color: var(--gold); background: var(--gold); color: var(--black); }
+
+  @media (max-width: 600px) {
+    .law { grid-template-columns: 50px 1fr; gap: 1rem; }
+    .law-num { font-size: 2.5rem; }
+    nav { padding: 1rem 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="index.html">HITMANA</a>
+  <a class="nav-back" href="index.html">← Volver al sitio</a>
+</nav>
+
+<!-- HERO -->
+<div class="manifesto-hero">
+  <p class="hero-eyebrow">La filosofía HITMANA</p>
+  <h1 class="hero-title">El <strong>Manifiesto</strong></h1>
+  <p class="hero-sub">Nueve leyes para quien no vino a este mundo a esperar que las cosas pasen.</p>
+  <div class="gold-line"></div>
+</div>
+
+<!-- INTRO -->
+<div class="intro-section">
+  <p>HITMANA no es solo un nombre. Es una decisión.<br>
+  La fusión de <em>hit</em> — impacto que dura — y <em>maná</em> — energía sagrada que viene de adentro.<br><br>
+  Estas nueve leyes son el código interno del que sube sin parar, sin excusas, sin pedir permiso.</p>
+</div>
+
+<!-- LAWS -->
+<div class="laws-section">
+  <div class="laws-header">
+    <p>Las leyes</p>
+    <h2>9 Leyes de la Atracción Energética</h2>
+  </div>
+
+  <div class="law">
+    <div class="law-num">01</div>
+    <div class="law-content">
+      <p class="law-title">La Ley de la Identidad</p>
+      <p class="law-body">Todo comienza con saber quién eres cuando nadie te mira. La energía que proyectas al mundo es un reflejo directo de la claridad que tienes sobre ti mismo. <em>No puedes atraer lo que no eres capaz de definir.</em></p>
+    </div>
+  </div>
+
+  <div class="law">
+    <div class="law-num">02</div>
+    <div class="law-content">
+      <p class="law-title">La Ley del Enfoque</p>
+      <p class="law-body">La energía sigue la atención. Lo que alimentas con tu mente, crece. Lo que ignoras, muere. El Capricornio no se distrae — elige un camino y lo trabaja hasta que el mundo lo reconoce. <em>El que persigue dos cosas no alcanza ninguna.</em></p>
+    </div>
+  </div>
+
+  <div class="law">
+    <div class="law-num">03</div>
+    <div class="law-content">
+      <p class="law-title">La Ley de la Acción Constante</p>
+      <p class="law-body">El universo no responde a los deseos — responde a los movimientos. Un paso pequeño hecho todos los días construye montañas que nadie creía posibles. <em>La constancia es la forma más poderosa de fe.</em></p>
+    </div>
+  </div>
+
+  <div class="law">
+    <div class="law-num">04</div>
+    <div class="law-content">
+      <p class="law-title">La Ley del Silencio Estratégico</p>
+      <p class="law-body">No todo lo que construyes necesita público. El ruido dispersa la energía. Los grandes movimientos se gestaron en silencio antes de sacudir el mundo. <em>Guarda tus planes, muestra tus resultados.</em></p>
+    </div>
+  </div>
+
+  <div class="law">
+    <div class="law-num">05</div>
+    <div class="law-content">
+      <p class="law-title">La Ley del Valor Propio</p>
+      <p class="law-body">No puedes dar lo que no tienes. La seguridad no se pide — se construye. Quien no se valora a sí mismo atrae situaciones que confirman esa creencia. <em>El maná nace de adentro o no nace.</em></p>
+    </div>
+  </div>
+
+  <div class="law">
+    <div class="law-num">06</div>
+    <div class="law-content">
+      <p class="law-title">La Ley de la Transformación del Dolor</p>
+      <p class="law-body">Todo lo que te rompió te dio material para construir. El artista no huye del dolor — lo convierte en letra, en ritmo, en historia. <em>Tu herida más profunda es tu mensaje más verdadero.</em></p>
+    </div>
+  </div>
+
+  <div class="law">
+    <div class="law-num">07</div>
+    <div class="law-content">
+      <p class="law-title">La Ley de la Vibración</p>
+      <p class="law-body">El mundo es energía en movimiento. Las personas, las oportunidades, los obstáculos — todo vibra en una frecuencia. Eleva la tuya y cambia lo que te rodea. <em>No puedes atraer lo que vibra más alto que tú desde donde estás.</em></p>
+    </div>
+  </div>
+
+  <div class="law">
+    <div class="law-num">08</div>
+    <div class="law-content">
+      <p class="law-title">La Ley de la Paciencia Activa</p>
+      <p class="law-body">Esperar no es pasividad — es preparación. El Capricornio sabe que el tiempo no es el enemigo: es el aliado del que trabaja mientras espera. <em>Las cosas que duran siempre tardaron en llegar.</em></p>
+    </div>
+  </div>
+
+  <div class="law">
+    <div class="law-num">09</div>
+    <div class="law-content">
+      <p class="law-title">La Ley del Legado</p>
+      <p class="law-body">Cada canción, cada decisión, cada día de trabajo es un ladrillo en algo que va a durar más que tú. No construyas para el momento — construye para lo que quieres que diga tu nombre cuando ya no estés. <em>El legado es la única forma de vivir dos veces.</em></p>
+    </div>
+  </div>
+
+</div>
+
+<!-- CLOSING -->
+<div class="closing-section">
+  <blockquote>
+    "No vine a esperar que las cosas pasaran.<br>
+    Vine a hacer que <strong>pasen.</strong>"
+  </blockquote>
+  <p class="closing-attr">— HITMANA</p>
+</div>
+
+<footer>
+  <p class="footer-logo">HITMANA</p>
+  <p class="footer-copy">© 2026 HITMANA Ventures LLC · Todos los derechos reservados</p>
+  <br>
+  <a class="footer-back" href="index.html">← Volver al inicio</a>
+</footer>
+
+<script>
+  // Scroll reveal for laws
+  const laws = document.querySelectorAll('.law');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => entry.target.classList.add('visible'), i * 80);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  laws.forEach(law => observer.observe(law));
+</script>
+
+</body>
+</html>
