@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="HITMANA — Música que deja marca. Sitio oficial del artista. Catálogo completo, fan zone y más.">
 <meta property="og:title" content="HITMANA — Música que deja marca">
-<meta property="og:description" content="Sitio oficial de HITMANA. 77 canciones, ASCAP registrado, distribución global por TuneCore.">
+<meta property="og:description" content="Sitio oficial de HITMANA. 80 canciones, ASCAP registrado, distribución global por TuneCore.">
 <title>HITMANA — Música que Deja Marca</title>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -200,7 +200,7 @@
   <div class="gold-line"></div>
   <p class="section-body">HITMANA es la fusión de <em>hit</em> — impacto que perdura — y <em>maná</em> — energía sagrada interior. Un artista de raíces cubanas que fusiona géneros, lenguas y mundos, movido por la perseverancia del Capricornio: subir sin parar, sin excusas, sin mirar atrás. Registrado en ASCAP, distribuido globalmente por TuneCore.</p>
   <div class="bio-grid">
-    <div class="bio-stat"><span class="bio-stat-num">77</span><span class="bio-stat-label">Canciones en catálogo</span></div>
+    <div class="bio-stat"><span class="bio-stat-num">80</span><span class="bio-stat-label">Canciones en catálogo</span></div>
     <div class="bio-stat"><span class="bio-stat-num">ASCAP</span><span class="bio-stat-label">Registrado oficialmente</span></div>
     <div class="bio-stat"><span class="bio-stat-num">10+</span><span class="bio-stat-label">Géneros explorados</span></div>
     <div class="bio-stat"><span class="bio-stat-num">TuneCore</span><span class="bio-stat-label">Distribución global</span></div>
@@ -333,7 +333,7 @@ const SONGS = [
   {num:40,title:"The Possible",genre:"Hip-Hop",lang:"EN",audiomack:"https://audiomack.com/hitmanamix"},
   {num:41,title:"La Mochila",genre:"Balada Épica / Soul",lang:"ES",audiomack:"https://audiomack.com/hitmanamix"},
   {num:42,title:"Lo Que Estás Perdiendo (V1)",genre:"Balada Épica",lang:"ES"},
-  {num:43,title:"Vicio Fino",genre:"Reggaetón Sensual",lang:"ES",audiomack:"https://audiomack.com/hitmanamix"},
+  {num:43,title:"Vicio Fino",genre:"Reggaetón Sensual",lang:"ES",audiomack:"https://audiomack.com/hitmanamix/song/vicio-fino"},
   {num:44,title:"Cierra la Puerta Que Voy Bajando",genre:"Reggaetón Urbano",lang:"ES",audiomack:"https://audiomack.com/hitmanamix"},
   {num:45,title:"Canción del Guaguancó (Los Papines)",genre:"Son Cubano / Guaguancó",lang:"ES"},
   {num:46,title:"The Deal",genre:"Hip-Hop / Trap",lang:"EN",audiomack:"https://audiomack.com/hitmanamix"},
@@ -352,23 +352,26 @@ const SONGS = [
   {num:59,title:"El Ojo",genre:"Balada Soul / Jazz Moderno",lang:"ES"},
   {num:60,title:"Lujo Invisible",genre:"Hip-Hop Consciente",lang:"ES"},
   {num:61,title:"Novo Atrevido",genre:"Balada Épica",lang:"ES"},
-  {num:62,title:"Me Gustó Lo Que Vi",genre:"Reggaetón / Dembow",lang:"ES"},
+  {num:62,title:"Me Gustó Lo Que Vi",genre:"Reggaetón / Dembow",lang:"ES",audiomack:"https://audiomack.com/hitmanamix/song/me-gusto-lo-que-vi"},
   {num:63,title:"Galifornia",genre:"Afrobeat",lang:"ES"},
   {num:64,title:"Nadie Se Ha Dado Cuenta",genre:"Salsa Romántica",lang:"ES"},
   {num:65,title:"El Filo",genre:"Afro-Deephouse",lang:"ES"},
   {num:66,title:"Mi Concierto",genre:"Bachata",lang:"ES"},
   {num:67,title:"El Rocío y la Sed",genre:"Balada Épica",lang:"ES"},
-  {num:68,title:"Toca mis Manos",genre:"Afro-Deephouse",lang:"ES"},
+  {num:68,title:"Toca mis Manos",genre:"Afro-Deephouse",lang:"ES",audiomack:"https://audiomack.com/hitmanamix/song/toca-mis-manos"},
   {num:69,title:"Tu Linaje",genre:"Afro-Deephouse",lang:"ES"},
   {num:70,title:"Tus Brazos",genre:"Afro-Deephouse",lang:"ES"},
   {num:71,title:"Bailando con el Viento",genre:"Afro-Deephouse",lang:"ES"},
   {num:72,title:"Bienvenido Candela",genre:"Reparto Cubano",lang:"ES"},
   {num:73,title:"Miguelón",genre:"Reparto Cubano",lang:"ES"},
-  {num:74,title:"Destello",genre:"Afro-Deephouse",lang:"ES",audiomack:"https://audiomack.com/hitmanamix"},
-  {num:75,title:"Atrévete",genre:"Afro-Deephouse",lang:"ES",youtube:"https://youtu.be/_O1mMgr-PdM"},
-  {num:76,title:"Pendiente Estuve de Ti",genre:"Bachata",lang:"ES"},
-  {num:77,title:"Decide o Divide",genre:"Salsa",lang:"ES"},
-  {num:78,title:"Razorbill",genre:"Afro-Deephouse",lang:"EN",audiomack:"https://audiomack.com/hitmanamix"}
+  {num:73,title:"Destello",genre:"Afro-Deephouse",lang:"ES",audiomack:"https://audiomack.com/hitmanamix"},
+  {num:74,title:"Atrévete",genre:"Afro-Deephouse",lang:"ES",youtube:"https://youtu.be/_O1mMgr-PdM",audiomack:"https://audiomack.com/hitmanamix/song/atrevete"},
+  {num:75,title:"Pendiente Estuve de Ti",genre:"Bachata",lang:"ES"},
+  {num:76,title:"Decide o Divide",genre:"Salsa",lang:"ES"},
+  {num:77,title:"Razorbill",genre:"Afro-Deephouse",lang:"EN",audiomack:"https://audiomack.com/hitmanamix"},
+  {num:78,title:"Tú Sabías y Callaste",genre:"Afro-Deephouse",lang:"ES",audiomack:"https://audiomack.com/hitmanamix/song/tu-sabias-y-callaste"},
+  {num:79,title:"Aléjate",genre:"Reparto Cubano / Bachata",lang:"ES",audiomack:"https://audiomack.com/hitmanamix/song/alejate"},
+  {num:80,title:"Destellos de Tu Piel",genre:"Sin clasificar",lang:"ES"}
 ];
 
 function pad(n){ return String(n).padStart(2,'0'); }
